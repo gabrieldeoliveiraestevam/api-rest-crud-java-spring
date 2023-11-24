@@ -1,5 +1,5 @@
+ProductController.class
 com/example/crud/domain/product/RequestProduct.class
-com/example/crud/controllers/ProductController.class
 com/example/crud/infra/RequestsExceptionHandler.class
 com/example/crud/domain/product/ProductRepository.class
 com/example/crud/domain/product/Product.class
