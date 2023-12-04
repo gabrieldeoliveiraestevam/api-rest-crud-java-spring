@@ -4,6 +4,7 @@ import com.example.crud.domain.product.Product;
 import com.example.crud.domain.product.ProductRepository;
 import com.example.crud.domain.product.RequestProduct;
 import com.example.crud.domain.product.RequestProductUpdate;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -49,7 +50,7 @@ public class ProductController {
             return ResponseEntity.ok(product);
         }
 
-        return ResponseEntity.notFound().build();
+        throw new EntityNotFoundException();
     }
 
     // Enviando o ID pela URL
@@ -64,6 +65,6 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.notFound().build();
+        throw new EntityNotFoundException();
     }
 }
