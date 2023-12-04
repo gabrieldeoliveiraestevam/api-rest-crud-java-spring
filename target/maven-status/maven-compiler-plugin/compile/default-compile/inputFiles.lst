@@ -1,8 +1,7 @@
-/home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/infra/RequestsExceptionHandler.java
 /home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/domain/product/ProductRepository.java
 /home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/CrudApplication.java
 /home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/ServletInitializer.java
 /home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/domain/product/RequestProduct.java
 /home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/controllers/ProductController.java
 /home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/domain/product/Product.java
-/home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/infra/ExceptionDTO.java
+/home/gabriel/Desktop/cursos/api-rest-crud-java-spring/src/main/java/com/example/crud/domain/product/RequestProductUpdate.java

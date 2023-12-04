@@ -4,11 +4,13 @@ import com.example.crud.domain.product.Product;
 import com.example.crud.domain.product.ProductRepository;
 import com.example.crud.domain.product.RequestProduct;
 import com.example.crud.domain.product.RequestProductUpdate;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 // String faz as instancias atraves das anotacoes
 @RestController
@@ -26,15 +28,27 @@ public class ProductController {
     @PostMapping
     public ResponseEntity registerProduct(@RequestBody @Valid RequestProduct data){
         // Instancia a classe e grava na tabela product
-        Product newProduct = new Product(data.name(), data.price_in_cents());
+        Product newProduct = new Product(data);
         repository.save(newProduct);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(newProduct);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity updateProduct(@PathVariable @Valid String id, @RequestBody @Valid RequestProductUpdate data){
-        Product product = repository.getReferenceById(id);
-        return ResponseEntity.ok().build();
+    @PutMapping()
+    @Transactional // Organiza os comandos de alteracao no banco (SET)
+    public ResponseEntity updateProduct(@RequestBody @Valid RequestProductUpdate data){
+        // Optional => O retorno do repository pode ser um Product ou um undefined
+        Optional<Product> optionalProduct = repository.findById(data.id());
+
+        // Verifica se o objeto product retornou, ou seja, se existe o produto
+        if (optionalProduct.isPresent()){
+            Product product = optionalProduct.get(); // Busca a instância
+            // A instancia está vinculada com o banco de dados. Então a atualização já é feita no banco.
+            product.setName(data.name());
+            product.setPrice_in_cents(data.price_in_cents());
+            return ResponseEntity.ok(product);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     // Enviando o ID pela URL

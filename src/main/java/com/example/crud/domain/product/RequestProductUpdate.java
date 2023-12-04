@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record RequestProductUpdate(
+        @NotNull
+        String id,
         @NotBlank
         String name,
         @NotNull
