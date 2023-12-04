@@ -6,6 +6,7 @@ import com.example.crud.domain.product.RequestProduct;
 import com.example.crud.domain.product.RequestProductUpdate;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProductController {
     private ProductRepository repository;
     @GetMapping // Quando o end point mapeado for um GET eh acionada esse metodo
     public ResponseEntity getAllProducts(){
-        var allProducts = repository.findAll();
+        var allProducts = repository.findAllByActiveTrue();
         return ResponseEntity.ok(allProducts);
     }
 
@@ -53,8 +54,16 @@ public class ProductController {
 
     // Enviando o ID pela URL
     @DeleteMapping("/{id}")
-    public ResponseEntity updateProduct(@PathVariable @Valid String id){
-        repository.deleteById(id);
-        return ResponseEntity.ok().build();
+    @Transactional
+    public ResponseEntity updateProduct(@PathVariable @Valid @NotNull String id){
+        Optional<Product> optionalProduct = repository.findById(id);
+
+        if (optionalProduct.isPresent()){
+            Product product = optionalProduct.get();
+            product.setActive(false);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
