@@ -1,4 +1,4 @@
-package com.example.crud.infra;
+package com.example.crud.infra.error;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;

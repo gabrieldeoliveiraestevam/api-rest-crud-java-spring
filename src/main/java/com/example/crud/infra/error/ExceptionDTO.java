@@ -1,4 +1,4 @@
-package com.example.crud.infra;
+package com.example.crud.infra.error;
 
 public class ExceptionDTO {
     private String message;

@@ -1,7 +1,7 @@
 package com.example.crud.controllers;
 
 import com.example.crud.domain.product.Product;
-import com.example.crud.domain.product.ProductRepository;
+import com.example.crud.repositories.ProductRepository;
 import com.example.crud.domain.product.RequestProduct;
 import com.example.crud.domain.product.RequestProductUpdate;
 import jakarta.persistence.EntityNotFoundException;
