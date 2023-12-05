@@ -1,8 +1,10 @@
 package com.example.crud.controllers;
 
 import com.example.crud.domain.user.AutheticationDTO;
+import com.example.crud.domain.user.AutheticationResponseDTO;
 import com.example.crud.domain.user.RegisterDTO;
 import com.example.crud.domain.user.User;
+import com.example.crud.infra.security.TokenService;
 import com.example.crud.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -28,6 +30,9 @@ public class AutheticationController {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AutheticationDTO data) {
         // Junta login e senha e forma um token
@@ -35,7 +40,11 @@ public class AutheticationController {
         // Realiza a autenticação - Compara com hash com o banco de dados
         var auth = this.authenticationManager.authenticate(userNamePassword);
 
-        return ResponseEntity.ok().build();
+        // Gera o token para o usuário informado
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        // Retorna o token para o usuário
+        return ResponseEntity.ok(new AutheticationResponseDTO(token));
     }
 
     @PostMapping("/register")

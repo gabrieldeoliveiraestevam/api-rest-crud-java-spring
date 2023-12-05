@@ -1,5 +1,6 @@
 package com.example.crud.infra.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,10 +13,14 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration // Indica que é uma classe de configuração
 @EnableWebSecurity // Essa será a classe que define a configuração do Spring Security
 public class SecurityConfigurations {
+
+    @Autowired
+    SecurityFilter securityFilter;
     // Filtros que serão acionados para realizar a validação da autenticação
     // Bean -> realiza a instância automática da classe
     @Bean
@@ -23,6 +28,7 @@ public class SecurityConfigurations {
         // Para requisições POST no end point product deve ser ADMIN
         // Para requisições POST nos end points de login e registro pode ser qualquer usuário
         // O restante das requests basta ser um usuário normal
+        // Antes de validar o usuário é feito o filtro para tratar o token
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -31,6 +37,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/product").hasRole("ADMIN")
                         .anyRequest().authenticated())
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
